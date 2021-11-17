@@ -39,32 +39,25 @@ export default {
   name: 'Paginador',
   props: {
     pagesProps:Number,
-    accion:Function
+    accion:Function,
+    paginaActual:Number
   },
   data(){
     return{
       loading:true,
       perPage: 20,
-      page:1,
+      page:this.paginaActual,
       totPages: this.pagesProps,    
       pages:0 
     }
   },
-  methods:{
-    setPage(){
-      console.log("this.page", this.page);
-    }
-  },
-  async mounted() {
-    console.log("this.page", this.page);
-    console.log("paginador montado!", this.pagesProps); 
+  async mounted() {      
     this.pages = Array.from({length: this.pagesProps}, (v, i) => i+1)  
     this.loading=false;
   },
   watch:{
     page(){             
-      this.$emit('accion', this.page)
-       
+      this.$emit('accion', this.page)       
     }
   }
 }
