@@ -1,15 +1,22 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app"> 
+  <div class="container">
+    <Listado/>
+    <Paginador/>
+  </div>    
+    
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Listado from './components/Listado.vue'
+import Paginador from './components/Paginador.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  components: {    
+    Listado,
+    Paginador
   }
 }
 </script>
