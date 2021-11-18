@@ -1,20 +1,39 @@
 <template>
-<div class="row" v-if="!loading && listView">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <Buscador @accion=loadDataFiltered />
-        <!--Listado de personajes -->
-        <div class="list-group listado" v-for="(item, index) in personajes">
-            <button type="button" class="list-group-item list-group-item-action" @click=detalle(item.id)>
-                <b>{{item.id}}</b>. {{item.name}}
-                <img :src=item.image class="rounded-circle thumb float-end" />
-            </button>
+<div v-if="!loading && listView">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-6">
+            <!--buscador -->
+            <Buscador @accion=loadDataFiltered />
         </div>
-        <br />
-        <!--Componente paginador -->
-        <Paginador :pages=pages :totPages=totPages @accion=loadData :paginaActual=currentPage />
+        <div class="col-md-2">
+            <!--ordenar por -->
+            <OrderBy @accion=loadDataOrderBy />
+        </div>
+        <div class="col-md-2"></div>
     </div>
-    <div class="col-md-2"></div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <!--Listado de personajes -->
+            <div class="list-group listado" v-for="(item, index) in personajes">
+                <button type="button" class="list-group-item list-group-item-action" @click=detalle(item.id)>
+                    <b>{{item.id}}</b>. {{item.name}}
+                    <img :src=item.image class="rounded-circle thumb float-end" />
+                </button>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <br/>
+     <!--paginador -->
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">           
+            <Paginador :pages=pages :totPages=totPages @accion=loadData :paginaActual=currentPage />
+        </div>
+        <div class="col-md-2"></div>
+    </div>
 </div>
 
 <div v-if="!listView">
@@ -29,16 +48,18 @@
 </template>
 
 <script>
-import Paginador from './Paginador.vue'
-import Detalle from './Detalle.vue'
-import Buscador from './Buscador.vue'
+import Paginador from './Paginador.vue';
+import Detalle from './Detalle.vue';
+import Buscador from './Buscador.vue';
+import OrderBy from './OrderBy.vue';
 
 export default {
     name: 'Listado',
     components: {
         Paginador,
         Detalle,
-        Buscador
+        Buscador,
+        OrderBy
     },
     data() {
         return {
@@ -47,11 +68,11 @@ export default {
             loading: true,
             personajes: {},
             pages: null,
-            totPages:0,            
+            totPages: 0,
             next: null,
-            prev: null, 
-            objFilter:{},  
-            currentPage:null         
+            prev: null,
+            objFilter: {},
+            currentPage: null
         }
     },
     async mounted() {
@@ -59,9 +80,9 @@ export default {
         await this.loadData();
     },
     methods: {
-        async loadData(n=1, obj) { 
+        async loadData(n = 1, obj) {
             //guarda en memoria pagina actual
-            this.currentPage = n;                                 
+            this.currentPage = n;
             try {
                 //Construye url para consulta
                 const url = `https://rickandmortyapi.com/api/character/?page=${n}${this.setFiltro(this.objFilter)}`;
@@ -72,7 +93,9 @@ export default {
                 console.log("data", data);
                 this.personajes = data.results;
                 this.totPages = data.info.pages;
-                this.pages = Array.from({length: data.info.pages}, (v, i) => i+1);                
+                this.pages = Array.from({
+                    length: data.info.pages
+                }, (v, i) => i + 1);
                 this.next = data.info.next;
                 this.prev = data.info.prev;
                 this.loading = false;
@@ -93,18 +116,21 @@ export default {
             console.log();
         },
         async loadDataFiltered(obj) {
-            console.log("generando llamada filtrada", obj);
             this.objFilter = obj;
             await this.loadData();
         },
-        setFiltro(obj){
+        loadDataOrderBy(){
+            console.log("ordenar por");
+            this.personajes.sort();
+        },
+        setFiltro(obj) {
             let query = '';
             if (obj) {
                 switch (obj.filter) {
                     case 'Nombre':
                         query = `&name=${obj.txt}`;
                         break;
-                    //La api no trabaja con edad
+                        //La api no trabaja con edad
                     case 'Edad':
                         query = `&name=${obj.txt}`;
                         break;
