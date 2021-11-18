@@ -1,5 +1,6 @@
 <template>
 <!--Buscador con filtros -->
+<!--La api no tiene información con respecto a Edad para utilizar en los filtros -->
 
 <form class="row g-3">
     <div class="col-auto">
@@ -39,7 +40,7 @@ export default {
     data() {
         return {
             loading: true,
-            filtros: ['Nombre', 'Edad', 'Género'],
+            filtros: ['Nombre', 'Género'],
             txtBuscar:'',
             filterSelected:'Nombre'            
         }

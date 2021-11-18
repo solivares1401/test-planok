@@ -104,6 +104,7 @@ export default {
                     case 'Nombre':
                         query = `&name=${obj.txt}`;
                         break;
+                    //La api no trabaja con edad
                     case 'Edad':
                         query = `&name=${obj.txt}`;
                         break;
