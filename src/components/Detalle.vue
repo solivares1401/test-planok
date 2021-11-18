@@ -27,8 +27,7 @@ export default {
             loading: true
         }
     },
-    async mounted() {
-        console.log("detalle montado", this.id);
+    async mounted() {        
         await this.loadData();
     },
     methods: {

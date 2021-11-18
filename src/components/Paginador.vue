@@ -4,7 +4,7 @@
     <!--boton icono << --> 
       <li class="page-item" :class="[page <= 1 ? 'disabled' : '']">
           <a class="page-link" href="javascript:void(0)" tabindex="-1" :aria-disabled="true" @click="page = 1">
-          <span aria-hidden="true">&laquo;</span>
+          <i class="bi bi-arrow-left"></i>
           </a>
       </li> 
       <!--boton previo -->    
@@ -14,7 +14,7 @@
           </a>
       </li>
       <!--listado de numeros -->
-      <li class="page-item" v-for="pageNumber in pages.slice(page-1,page+9)" @click="page = pageNumber" :class="[pageNumber == page ? 'active':'']">
+      <li class="page-item" v-for="pageNumber in pages.slice(page-1,page+9)" @click="page = pageNumber" :class="[pageNumber == page ? 'active':'']" v-bind:key=pageNumber>
         <a class="page-link" v-if="pageNumber != pages.length">{{ pageNumber}}</a>
       </li>
       <li v-if="page < pages.length && pages.length > 10" class="page-item">
@@ -33,7 +33,13 @@
             <a class="page-link" href="javascript:void(0)" @click="page++">
                 Next
             </a>
-        </li>      
+        </li> 
+            <!--boton icono << --> 
+      <li class="page-item" :class="[page == totPages ? 'disabled' : '']">
+          <a class="page-link" href="javascript:void(0)" tabindex="-1" :aria-disabled="true" @click="page = totPages">
+          <i class="bi bi-arrow-right"></i>
+          </a>
+      </li>      
     </ul>
   </nav> 
 </template>

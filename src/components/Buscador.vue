@@ -9,7 +9,7 @@
     </div>
     <div class="col-auto">
         <select class="form-select orderby" aria-label="Default select" v-model="filterSelected">
-            <option v-for="(item, index) in filtros" :value=item>{{item}}</option>
+            <option v-for="(item) in filtros" :value=item v-bind:key=item>{{item}}</option>
         </select>
     </div>
     <div class="col-auto">
@@ -36,8 +36,7 @@ export default {
         }
     },
     mounted() {
-        this.loading = false;
-        console.log("buscador montado", this.opciones);
+        this.loading = false;        
     },
     methods:{
         search(){                                              

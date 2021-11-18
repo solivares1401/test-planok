@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",    
+    "deploy":"aws s3 cp --recursive dist/ s3://sebastiantestplanok --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers"
   },
   "dependencies": {
     "bootstrap-icons": "^1.7.1",

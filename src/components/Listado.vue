@@ -16,9 +16,9 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <!--Listado de personajes -->
-            <div class="list-group listado" v-for="(item, index) in personajes">
+            <div class="list-group listado" v-for="(item) in personajes" v-bind:key=item>
                 <button type="button" class="list-group-item list-group-item-action" @click=detalle(item.id)>
-                    <b>{{item.id}}</b>. {{item.name}}
+                    {{item.name}}
                     <img :src=item.image class="rounded-circle thumb float-end" />
                 </button>
             </div>
@@ -89,8 +89,7 @@ export default {
                 console.log("url", url);
                 //Consulta a la api para traer pagina por numero
                 const res = await fetch(url);
-                const data = await res.json();
-                console.log("data", data);
+                const data = await res.json();                
                 this.personajes = data.results;
                 this.totPages = data.info.pages;
                 this.pages = Array.from({
@@ -119,9 +118,27 @@ export default {
             this.objFilter = obj;
             await this.loadData();
         },
-        loadDataOrderBy(){
-            console.log("ordenar por");
-            this.personajes.sort();
+        loadDataOrderBy(obj){            
+            switch (obj.sort) {
+                case 'Nombre':
+                    //Ordenar por nombre alfabeticamente
+                    if(obj.desc){                        
+                        this.personajes.sort((a, b)=> a.name < b.name ? -1 : 1);                                              
+                    }else {                        
+                      this.personajes.sort((a, b)=> a.name > b.name ? -1 : 1);  
+                    }                     
+                    break;
+                case 'Género':
+                    //Ordenar por genero alfabeticamente
+                    if(obj.desc){                        
+                        this.personajes.sort((a, b)=> a.gender < b.gender ? -1 : 1);
+                    }else {                        
+                      this.personajes.sort((a, b)=>a.gender > b.gender ? -1 : 1);  
+                    }                 
+                    break            
+                default:
+                    break;
+            }                      
         },
         setFiltro(obj) {
             let query = '';
