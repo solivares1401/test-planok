@@ -1,16 +1,19 @@
 <template>
   <nav aria-label="Page navigation example" v-if="!loading">
     <ul class="pagination"> 
+    <!--boton icono << --> 
       <li class="page-item" :class="[page <= 1 ? 'disabled' : '']">
           <a class="page-link" href="javascript:void(0)" tabindex="-1" :aria-disabled="true" @click="page = 1">
           <span aria-hidden="true">&laquo;</span>
           </a>
-      </li>     
+      </li> 
+      <!--boton previo -->    
        <li class="page-item" :class="[page <= 1 ? 'disabled' : '']">
           <a class="page-link" href="javascript:void(0)" tabindex="-1" :aria-disabled="true" @click="page--">
             Previous
           </a>
       </li>
+      <!--listado de numeros -->
       <li class="page-item" v-for="pageNumber in pages.slice(page-1,page+9)" @click="page = pageNumber" :class="[pageNumber == page ? 'active':'']">
         <a class="page-link" v-if="pageNumber != pages.length">{{ pageNumber}}</a>
       </li>
@@ -19,11 +22,13 @@
               ...
           </a>
       </li>
+      <!--boton página final --> 
       <li class="page-item" :class="[page >= totPages ? 'active' : '']">
           <a class="page-link" href="javascript:void(0)" @click="page = pages.length">
               {{pages.length}}
           </a>
       </li>
+      <!--boton next --> 
       <li class="page-item" :class="[page >= totPages ? 'disabled' : '']">
             <a class="page-link" href="javascript:void(0)" @click="page++">
                 Next
@@ -38,7 +43,8 @@
 export default {
   name: 'Paginador',
   props: {
-    pagesProps:Number,
+    pages:Array,
+    totPages: Number,
     accion:Function,
     paginaActual:Number
   },
@@ -46,17 +52,16 @@ export default {
     return{
       loading:true,
       perPage: 20,
-      page:this.paginaActual,
-      totPages: this.pagesProps,    
-      pages:0 
+      page:this.paginaActual,               
     }
   },
-  async mounted() {      
-    this.pages = Array.from({length: this.pagesProps}, (v, i) => i+1)  
-    this.loading=false;
+  async mounted() { 
+    //Se transforma en array el total de páginas          
+    this.loading=false;    
   },
   watch:{
-    page(){             
+    page(){  
+      //Se llama la función del componente padre           
       this.$emit('accion', this.page)       
     }
   }
